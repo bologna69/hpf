@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+    <head>
+        <meta name="referrer" content="no-referrer">
+        <meta charset="UTF-8">
+        <meta name="theme-color" content="#ffffff">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <title>{{ title }}</title>
+        <style type="text/css">
+            table {
+                border-radius: 5px;
+                width: 50%;
+                margin: 0px auto;
+                float: none;
+            }
+            body {
+                background: #323232 !important;
+                color: aqua; !important;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <br>
+            <form action="{{ root }}/search" method="POST">
+                <input type="text" class="form-control" placeholder="Search" name="search">
+            </form>
+            <br>
+        </div>
+        <div class="container">
+            {% if posts is not none %}
+                <ul class="pager">
+                    {% if previous_page|length > 0 %}
+                        <li class="previous"><a href="{{ root }}/{{ previous_page }}">Previous</a></li>
+                    {% endif %}
+                    {% if next_page|length > 0 %}
+                        <li class="next"><a href="{{ root }}/{{ next_page }}">Next</a></li>
+                    {% endif %}
+                </ul>
+            {% else %}
+                <p>No results found.</p>
+            {% endif %}
+        </div>
+        {% if posts is not none %}
+            <div class="container-fluid">
+                    <table>
+                        {% for row in posts | batch(4)  %}
+                        <tr>
+                            {% for post in row %}
+                                <td>
+                                    <a target="_blank" href="{{ root }}/post/{{ post.link }}">
+                                        <img src="{{ post.image }}" alt="{{ post.title }}"><br>{{ post.title }}
+                                    </a>
+                                </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+            </div>
+        {% endif %}
+    </body>
+</html>
